@@ -18,7 +18,7 @@ pipeline {
 
 		stage('Push to registry') {
 			steps {
-				withDockerRegistry([ credentialId: "andru1ha, url: ""]) {
+				withDockerRegistry([ credentialId: 'dockerhub-creds', url: 'https://index.docker.io/v1/']) {
 					sh "docker push andru1ha/andru1ha:latest"
 					sh "docker push andru1ha/andru1ha:$BUILD_NUMBER"
 				}
