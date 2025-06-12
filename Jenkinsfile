@@ -18,15 +18,15 @@ pipeline {
     stage('Push to registry') {
       steps {
         withDockerRegistry([ credentialsId: 'dockerhub-creds', url: '' ]) {
-          sh "docker push andru1ha/andru1ha:latest"
-          sh "docker push andru1ha/andru1ha:${BUILD_NUMBER}"
+          sh "docker push andru1ha/itpa-serhiichuk:latest"
+          sh "docker push andru1ha/itpa-serhiichuk:${BUILD_NUMBER}"
         }
       }
     }
 
     stage('Deploy image') {
       steps {
-        sh "docker run -d -p 80:80 andru1ha/andru1ha:latest"
+        sh "docker run -d -p 80:80 andru1ha/itpa-serhiichuk:latest"
       }
     }
 
