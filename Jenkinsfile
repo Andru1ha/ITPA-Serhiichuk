@@ -26,13 +26,19 @@ pipeline {
 
     stage('Deploy image') {
       steps {
+        // Зупинити попередній контейнер (опціонально)
+        sh "docker rm -f \$(docker ps -q --filter ancestor=andru1ha/itpa-serhiichuk:latest)  true"
+        // Запуск на порту 80
         sh "docker run -d -p 80:80 andru1ha/itpa-serhiichuk:latest"
       }
     }
 
     stage('Deploy nginx/custom') {
       steps {
-        sh "docker run -d -p 80:80 nginx/custom:latest"
+        // Зупинити попередній контейнер (опціонально)
+        sh "docker rm -f \$(docker ps -q --filter ancestor=nginx/custom:latest)  true"
+        // Запуск на порту 8080
+        sh "docker run -d -p 8080:80 nginx/custom:latest"
       }
     }
   }
