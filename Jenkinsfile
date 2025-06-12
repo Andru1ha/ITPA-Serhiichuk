@@ -4,19 +4,32 @@ pipeline {
 	stages {
 		stage('Start') {
 			steps {
-				echo 'Lab1: nginx/custom'
+				echo 'Lab2: started by GitHub'
 			}
 		}
 
-		stage('Build nginx/custom') {
+		stage('Image build') {
 			steps{
-				sh 'docker build -t nginx/custom:latest .'
+				sh "docker build -t andru1ha:latest ."
+				sh "docker tag andru1ha andu1ha/andru1ha:latest"
+				sh "docker tag andru1ha andru1ha/andru1ha:$BUILD_NUMBER"
 			}
 		}
 
-		stage('Test nginx/custom') {
+		stage('Push to registry') {
 			steps {
-				echo 'Pass'
+				withDockerRegistry([ credentialId: "dockerhub-token, url: ""]) {
+					sh "docker push andru1ha/andru1ha:latest"
+					sh "docker push andru1ha/andru1ha:$BUILD_NUMBER"
+				}
+			}
+		}
+		
+		stage('Deploy image') {
+			steps{
+				sh "docker run -d -p 80:80 andru1ha/andru1ha"
+			}
+
 			}
 		}
 
