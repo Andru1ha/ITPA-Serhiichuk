@@ -10,8 +10,8 @@ pipeline {
 
     stage('Image build') {
       steps {
-        sh "docker build -t andru1ha/andru1ha:latest ."
-        sh "docker tag andru1ha/andru1ha:latest andru1ha/andru1ha:${BUILD_NUMBER}"
+        sh "docker build -t andru1ha/itpa-serhiichuk:latest ."
+        sh "docker tag andru1ha/itpa-serhiichuk:latest andru1ha/andru1ha:${BUILD_NUMBER}"
       }
     }
 
