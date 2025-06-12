@@ -26,19 +26,25 @@ pipeline {
 
     stage('Deploy image') {
       steps {
-        // Зупинити попередній контейнер (опціонально)
-        sh "docker rm -f \$(docker ps -q --filter ancestor=andru1ha/itpa-serhiichuk:latest)  true"
-        // Запуск на порту 80
-        sh "docker run -d -p 80:80 andru1ha/itpa-serhiichuk:latest"
+        sh '''
+          CONTAINER_ID=$(docker ps -q --filter ancestor=andru1ha/itpa-serhiichuk:latest)
+          if [ ! -z "$CONTAINER_ID" ]; then
+            docker rm -f $CONTAINER_ID
+          fi
+          docker run -d -p 80:80 andru1ha/itpa-serhiichuk:latest
+        '''
       }
     }
 
     stage('Deploy nginx/custom') {
       steps {
-        // Зупинити попередній контейнер (опціонально)
-        sh "docker rm -f \$(docker ps -q --filter ancestor=nginx/custom:latest)  true"
-        // Запуск на порту 8080
-        sh "docker run -d -p 8080:80 nginx/custom:latest"
+        sh '''
+          CONTAINER_ID=$(docker ps -q --filter ancestor=nginx/custom:latest)
+          if [ ! -z "$CONTAINER_ID" ]; then
+            docker rm -f $CONTAINER_ID
+          fi
+          docker run -d -p 8081:80 nginx/custom:latest
+        '''
       }
     }
   }
